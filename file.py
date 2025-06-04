@@ -35,13 +35,13 @@ class File:
         with open(self.file_bd, "r", encoding="utf-8") as content: #lendo-o, caso ele exista.
             current_bank_contacts = json.load(content)
 
-        return current_bank_contacts
+        return current_bank_contacts #retornando a lista de contato que houver.
 
-    def write_in_json(self, dictionary_list): # grava no json uma lista de dicionarios de contatos.
+    def write_in_json(self, list): # grava no json uma lista de dicionarios de contatos.
         """FUNÇÃO EXTERNA: sempre que se precisar escrever algo num arquivo, especiamente um json,
         deve-se usar esta função, que serve pra adicionar e editar dados pelo menos. """
 
         with open(self.file_bd, "w", encoding="utf-8") as writing_bd:
-            writing_bd.write(json.dumps(dictionary_list, indent= 5))
-        print(dictionary_list)
+            writing_bd.write(json.dumps(list, indent= 5))
+        print(list)
 
