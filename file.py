@@ -16,7 +16,6 @@ class File:
         inicializador = [{"":""}] #lista com um dicionário vazio responsável por inicializar o json.
         with open(self.file_bd, "w", encoding='utf-8') as data_base:
             data_base.write(json.dumps(inicializador, indent= 5))
-        print("DEBUG1: criou o arquivo do bd")
 
     def _returning_file_path(self):  # retorna o caminho do json
         """FUNÇÃO INTERNA: esta função lê um arquivo de configuração do tipo config.ini,
@@ -43,5 +42,5 @@ class File:
 
         with open(self.file_bd, "w", encoding="utf-8") as writing_bd:
             writing_bd.write(json.dumps(list, indent= 5))
-        print(list)
+
 
