@@ -23,11 +23,29 @@ class Dao:
                 file_json.write_in_json(json_content_list)
                 print("novo contato foi salvo.")
 
-    def search_all_contacts(self):
+    def search_contacts(self, name):
         file = File()
         list_of_all_contacts = file.read_file()  # lendo todos os contatos armazenados no json
 
-        self._show_contacts(list_of_all_contacts)
+        list_contacts_selected_by_name = []
+        validator = False
+        for contact in list_of_all_contacts:
+            if name in contact["name"]:
+                 list_contacts_selected_by_name.append(contact)
+                 self._show_contacts(list_contacts_selected_by_name)
+                 validator = True
+
+        if not validator:
+            print(f'"{name}" não encontrado.')
+
+    def  view_all_contacts(self):
+        """VER TODOS OS CONTATOS: esta função exibe todos os contatos que houver no banco de dados.
+        Ela é diferente da função search_contacts(), que busca um contato a partir de um nome."""
+
+        file = File()
+        list_all_contacts = file.read_file()
+
+        self._show_contacts(list_all_contacts)
 
     def delete_contacts(self, name): #remove um contato a partir do número passado.
         """ APAGAR UM CONTATO: essa funḉão remove do banco (json) um contato a partir do número de telefone
@@ -36,14 +54,17 @@ class Dao:
         list_contacts = self._search_numbers_by_name(name) # usando a função search_contact pra pegar os números
         # relacionados ao nome passado por parâmetro.
 
-        self._show_contacts(list_contacts)
-        number_for_delete = input("Digite o número a ser excluido:  ")
+        if not list_contacts: # se list_contacts for um booleano Falso...
+            print(f'Não há ninguem chamado "{name}" nesta agenda.')
+        else: # se list_contacts for uma lista ...
+            self._show_contacts(list_contacts) #exibindo todos os contatos que o fulano possui
+            number_for_delete = input("Digite o número a ser excluido:  ") #solicitando o numero a ser apagado
 
-        file = File()
-        list_json = file.read_file()
+            file = File()
+            list_json = file.read_file() #lendo o contatos todos do banco
 
-        result = self._remove_a_dictionary_from_a_list(number_for_delete, list_json)
-        return  result
+            result = self._remove_a_dictionary_from_a_list(number_for_delete, list_json) #removendo o contato
+            return  result
 
     def edit_contact(self, name):# editar um contato
         """EDITAR CONTATO: essa função oferece a possibilidade de editar, alterar, um contato. Deve-se procurá-lo a partir do
@@ -64,11 +85,11 @@ class Dao:
             number_is_in_a_list =  self._check_if_a_number_is_in_a_list(number_for_edition, all_numbers_of_a_name)
             if number_is_in_a_list: # Se o número passado estiver na lista de números do fulano...
 
-                new_name = input(f'Novo nome: "{name}" ')  # recebendo o novo nome
+                new_name = input(f'Novo nome: "{name}?" ')  # recebendo o novo nome
                 if new_name == "":  # caso nada for digitado...
                     new_name = name
 
-                new_number = input(f'Novo número:  "{number_for_edition}" ')  # recebendo o novo número
+                new_number = input(f'Novo número:  "{number_for_edition}?" ')  # recebendo o novo número
                 if new_number == "":  # se nada for digitado...
                     new_number = number_for_edition
 
@@ -115,9 +136,10 @@ class Dao:
         contact_edited = Contact(name, number_phone) #instanciando a classe contact
         return contact_edited._dictionary_contact() #retornando o dicionário formado pelos parâmetros passados na função.
 
-    def _show_contacts(self, list_contatc):
+    def _show_contacts(self, list_contact):
         """MOSTRAR CONTATOS: esta função exibe todos os contatos de qualquer lista passada via parâmetro."""
-        for dictionary in list_contatc:
+        list_contact.sort(key=lambda key: key["name"])
+        for dictionary in list_contact:
             print(f'\t\t {dictionary["name"]} ------ {dictionary["number_phone"]}')
 
     def _remove_a_dictionary_from_a_list (self, number_for_delete, list_contacts):
@@ -144,8 +166,6 @@ class Dao:
 
         validator = False
         for dictionary  in list_numbers:
-            #print(f"{number} e {dictionary.values()}")
             if number  in dictionary.values():
-                #print("encontrou o numero.")
                 validator = True
         return  validator

@@ -10,12 +10,12 @@ Registrar em arquivo local nome e número de telefone
 
 Desenvolvedores: Pablo Gomes
 
- início: 02/06/2025 ;  fim:  11/06/2025
+ início: 02/06/2025 ;  fim: 11/06/2025
 
  Desenvolvedores: Pablo Gomes
 
  Coisas a resolver:
-#exibir os contatos todos ou por nome por ordem alfabética
+# corrigir a parte a função de busca que, quando digitada poucas letras, exibe um mesmo contato mais de uma vez.
 
 """
 
@@ -26,11 +26,11 @@ def main():
     dao_of_main = Dao()
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("itens_menu", choices= ['adicionar', 'pesquisar',
+    parser.add_argument("itens_menu", choices= ['adicionar', 'buscar', 'contatos',
                                                 'editar', 'excluir'])
 
-    parser.add_argument(f'--nome')
-    parser.add_argument(f'--numero')
+    parser.add_argument('--nome', type= str.title)
+    parser.add_argument('--numero')
 
     args = parser.parse_args()
     option = args.itens_menu
@@ -42,8 +42,12 @@ def main():
         else:
             dao_of_main.add_contacts(args.nome, args.numero)
 
-    elif option == 'pesquisar':
-        dao_of_main.search_all_contacts()
+    elif option == 'buscar':
+        dao_of_main.search_contacts(args.nome)
+
+    elif option == 'contatos':
+        dao_of_main.view_all_contacts()
+
     elif option == "editar":
         dao_of_main.edit_contact(args.nome)
 
