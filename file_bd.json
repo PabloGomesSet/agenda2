@@ -4,10 +4,6 @@
           "number_phone": "99103550"
      },
      {
-          "name": "\u00cdtala",
-          "number_phone": "94652355"
-     },
-     {
           "name": "Nath\u00e1lia",
           "number_phone": "99452030"
      },
@@ -50,5 +46,9 @@
      {
           "name": "Giorgian De Arrascaeta",
           "number_phone": "99141010"
+     },
+     {
+          "name": "itala",
+          "number_phone": "94652355"
      }
 ]

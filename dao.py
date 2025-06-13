@@ -32,8 +32,10 @@ class Dao:
         for contact in list_of_all_contacts:
             if name in contact["name"]:
                  list_contacts_selected_by_name.append(contact)
-                 self._show_contacts(list_contacts_selected_by_name)
-                 validator = True
+
+        if list_contacts_selected_by_name:
+            self._show_contacts(list_contacts_selected_by_name)
+            validator = True
 
         if not validator:
             print(f'"{name}" não encontrado.')
@@ -139,8 +141,17 @@ class Dao:
     def _show_contacts(self, list_contact):
         """MOSTRAR CONTATOS: esta função exibe todos os contatos de qualquer lista passada via parâmetro."""
         list_contact.sort(key=lambda key: key["name"])
-        for dictionary in list_contact:
-            print(f'\t\t {dictionary["name"]} ------ {dictionary["number_phone"]}')
+
+        space = " "
+        width = len(list_contact)
+        separator = 2 *(space * width)
+
+        print(separator * 10, "\n\t\t\t\t\t\t AGENDA DO FULANO DE TAL".rjust(width))
+        print("")
+        print(separator, "NOME".ljust(width), separator, "NÚMERO\n".rjust(2*width) )
+
+        for index, dictionary in enumerate( list_contact):
+           print(separator, index +1 , f' {dictionary["name"]}'.ljust(width), separator,  f'{dictionary["number_phone"]}'.rjust(2*width))
 
     def _remove_a_dictionary_from_a_list (self, number_for_delete, list_contacts):
         """REMOVER UM DICIONÁRIO DE UMA LISTA:  essa função recebe por parametro um numero e uma lista qualquer,
