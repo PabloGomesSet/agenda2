@@ -144,14 +144,19 @@ class Dao:
 
         space = " "
         width = len(list_contact)
-        separator = 2 *(space * width)
+        separator = 5
 
-        print(separator * 10, "\n\t\t\t\t\t\t AGENDA DO FULANO DE TAL".rjust(width))
+        column_name = 20
+        column_number = 40
+        names = 30
+        numbers = 5
+
+        print("\n\t\tAGENDA DO FULANO DE TAL")
         print("")
-        print(separator, "NOME".ljust(width), separator, "NÚMERO\n".rjust(2*width) )
+        print("NOME".center(column_name),"NÚMERO\n".center(column_number))
 
         for index, dictionary in enumerate( list_contact):
-           print(separator, index +1 , f' {dictionary["name"]}'.ljust(width), separator,  f'{dictionary["number_phone"]}'.rjust(2*width))
+           print(f"{index + 1}".rjust(numbers) , f' {dictionary["name"]}'.ljust(names),  f'{dictionary["number_phone"]}'.center(numbers))
 
     def _remove_a_dictionary_from_a_list (self, number_for_delete, list_contacts):
         """REMOVER UM DICIONÁRIO DE UMA LISTA:  essa função recebe por parametro um numero e uma lista qualquer,

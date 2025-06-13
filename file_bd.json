@@ -16,10 +16,6 @@
           "number_phone": "99172585"
      },
      {
-          "name": "Thalia",
-          "number_phone": "99146244"
-     },
-     {
           "name": "Amanda",
           "number_phone": "94152265"
      },
@@ -50,5 +46,9 @@
      {
           "name": "itala",
           "number_phone": "94652355"
+     },
+     {
+          "name": "Thalia",
+          "number_phone": "99146244"
      }
 ]
