@@ -34,6 +34,7 @@ class File:
         with open(self.file_bd, "r", encoding="utf-8") as content: #lendo-o, caso ele exista.
             current_bank_contacts = json.load(content)
 
+        current_bank_contacts.sort(key = lambda chave: chave["name"])
         return current_bank_contacts #retornando a lista de contato que houver.
 
     def write_in_json(self, list): # grava no json uma lista de dicionarios de contatos.

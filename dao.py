@@ -73,6 +73,7 @@ class Dao:
         nome e depois escolher entre mudar o nome ou número (lembrando que são estes dois elementos que forma um contato.)"""
 
         file_edited = File()  # criando um objeto de File para usar os seus métodos de escrita e leitura
+        list_all_contacts = file_edited.read_file()  # lista que guarda todos os contatos do banco
         all_numbers_of_a_name = self._search_numbers_by_name(name) #pegando todos os contatos ligados a um
         # mesmo nome.
 
@@ -95,16 +96,14 @@ class Dao:
                 if new_number == "":  # se nada for digitado...
                     new_number = number_for_edition
 
-                list_all_contacts = file_edited.read_file() #lista que guarda todos os contatos do banco
-                self._remove_a_dictionary_from_a_list(number_for_edition, list_all_contacts) # removendo do banco
-                # o contato cujo número foi passado
+                dict_contact = self._return_a_dictionary(new_name, new_number)  # novo dict com o numero e novo nome
 
-                dict_contact = self._return_a_dictionary(new_name, new_number) #novo dict com o numero e novo nome
+                for contact in list_all_contacts:
+                    if number_for_edition == contact["number_phone"]:
+                        contact.update(dict_contact)
+                        break
 
-                content_json = file_edited.read_file()# lendo e armazenando numa lista o conteúdo do json
-                content_json.append(dict_contact) #adicionando à lista o dicionário do contato editado
-
-                file_edited.write_in_json(content_json) # escrevendo a lista no json
+                file_edited.write_in_json(list_all_contacts)
                 print("Edição realizada com sucesso!")
             else:
                 print( f'Opa! Este número "{number_for_edition}" NÃO é um dos números de "{name}."')
@@ -135,16 +134,13 @@ class Dao:
     def _return_a_dictionary(self, name, number_phone): # retorna um dicionario de contato
         """RETORNAR UM DICIONÁRIO: esta  função tem o papel de receber um nome e um número e retorná-los num dicionário.
         Para isso ela usa uma instância da classe Contact."""
-        contact_edited = Contact(name, number_phone) #instanciando a classe contact
+
+        contact_edited = Contact(name.title(), number_phone) #instanciando a classe contact
         return contact_edited._dictionary_contact() #retornando o dicionário formado pelos parâmetros passados na função.
 
     def _show_contacts(self, list_contact):
         """MOSTRAR CONTATOS: esta função exibe todos os contatos de qualquer lista passada via parâmetro."""
         list_contact.sort(key=lambda key: key["name"])
-
-        space = " "
-        width = len(list_contact)
-        separator = 5
 
         column_name = 20
         column_number = 40
