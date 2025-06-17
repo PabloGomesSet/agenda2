@@ -3,33 +3,33 @@ from  file import  File
 
 
 class Dao:
+    def __init__(self):
+        file = File()
+        self.file = file
+        self.contact_list = file.read_file() #aqui fica a lista de contatos advinda do json.
 
 #Funções de uso externo (que aparecem noutros módulos)
     def add_contacts(self, name, number): #adicionar um novo contato no sistema.
         new_contact = Contact(name, number) #instância de Contact
-        file_json = File() #instância da classe File
-
-        json_content_list = file_json.read_file() #aqui fica a lista de contatos advinda do json.
 
         validator = True
-        for dict_contact in json_content_list: #percorre a lista dicionários
+        for dict_contact in self.contact_list: #percorre a lista dicionários
             if number in dict_contact. values(): # se o numero de telefone já estiver num dos dicionários...
                 print("Não dá pra adicionar. Este número já está salvo.")
                 validator = False
                 break
 
         if validator == True:  #caso número ainda nao esteja num dos dicionarios.
-                json_content_list.append(new_contact._dictionary_contact()) #adiciona à lista o dicionario criado na classe
-                file_json.write_in_json(json_content_list)
+                self.contact_list.append(new_contact._dictionary_contact()) #adiciona à lista o dicionario criado na classe
+                self.file.write_in_json(self.contact_list)
                 print("novo contato foi salvo.")
 
     def search_contacts(self, name):
-        file = File()
-        list_of_all_contacts = file.read_file()  # lendo todos os contatos armazenados no json
 
-        list_contacts_selected_by_name = []
+        list_contacts_selected_by_name = [] #lista a ser preenchida com os números de um mesmo nome
         validator = False
-        for contact in list_of_all_contacts:
+
+        for contact in self.contact_list:
             if name in contact["name"]:
                  list_contacts_selected_by_name.append(contact)
 
@@ -44,10 +44,7 @@ class Dao:
         """VER TODOS OS CONTATOS: esta função exibe todos os contatos que houver no banco de dados.
         Ela é diferente da função search_contacts(), que busca um contato a partir de um nome."""
 
-        file = File()
-        list_all_contacts = file.read_file()
-
-        self._show_contacts(list_all_contacts)
+        self._show_contacts(self.contact_list)
 
     def delete_contacts(self, name): #remove um contato a partir do número passado.
         """ APAGAR UM CONTATO: essa funḉão remove do banco (json) um contato a partir do número de telefone
@@ -62,10 +59,7 @@ class Dao:
             self._show_contacts(list_contacts) #exibindo todos os contatos que o fulano possui
             number_for_delete = input("Digite o número a ser excluido:  ") #solicitando o numero a ser apagado
 
-            file = File()
-            list_json = file.read_file() #lendo o contatos todos do banco
-
-            result = self._remove_a_dictionary_from_a_list(number_for_delete, list_json) #removendo o contato
+            result = self._remove_a_dictionary_from_a_list(number_for_delete) #removendo o contato
             return  result
 
     def edit_contact(self, name):# editar um contato
@@ -154,22 +148,22 @@ class Dao:
         for index, dictionary in enumerate( list_contact):
            print(f"{index + 1}".rjust(numbers) , f' {dictionary["name"]}'.ljust(names),  f'{dictionary["number_phone"]}'.center(numbers))
 
-    def _remove_a_dictionary_from_a_list (self, number_for_delete, list_contacts):
+    def _remove_a_dictionary_from_a_list (self, number_for_delete):
         """REMOVER UM DICIONÁRIO DE UMA LISTA:  essa função recebe por parametro um numero e uma lista qualquer,
         procura o primeiro dentro da segunda; e apaga o dicionário no qual ele estiver."""
 
-        file_bd = File() #criando um objeto de Flie para usar, mais abaixo, a sua função write,  função de escrita.
         validator = False  # variável de validação, controle, verificação...
 
-        for contact in list_contacts:  # percorrendo a lista de dicionários de contato
+        for contact in self.contact_list:  # percorrendo a lista de dicionários de contato
             if number_for_delete in contact.values():  # se o número passado via parâmetro estiver num dos dicionários...
-                list_contacts.remove(contact)  # removendo o dicionário cujo o número bate com o passado no parâmetro.
+                self.contact_list.remove(contact)  # removendo o dicionário cujo o número bate com o passado no parâmetro.
                 validator = True
 
         if not validator:  # se o número passado não bater com nenhum dos números dos contatos...
             print("número não encontrado")
         else:
-            file_bd.write_in_json(list_contacts)  # escrevendo no json a nova lista de contato, agora sem aquele que foi removido.
+            self.file.write_in_json(self.contact_list)  # escrevendo no json a nova lista de contato, agora sem aquele que foi
+            # removido.
             return True
 
     def _check_if_a_number_is_in_a_list(self, number, list_numbers):
