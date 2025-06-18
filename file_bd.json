@@ -20,10 +20,6 @@
           "number_phone": "99103550"
      },
      {
-          "name": "Itala",
-          "number_phone": "94652355"
-     },
-     {
           "name": "Mateus Mota",
           "number_phone": "99886354"
      },
@@ -54,5 +50,9 @@
      {
           "name": "Thalia",
           "number_phone": "99146244"
+     },
+     {
+          "name": "Itala",
+          "number_phone": "94652355"
      }
 ]

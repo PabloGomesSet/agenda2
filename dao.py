@@ -66,8 +66,6 @@ class Dao:
         """EDITAR CONTATO: essa função oferece a possibilidade de editar, alterar, um contato. Deve-se procurá-lo a partir do
         nome e depois escolher entre mudar o nome ou número (lembrando que são estes dois elementos que forma um contato.)"""
 
-        file_edited = File()  # criando um objeto de File para usar os seus métodos de escrita e leitura
-        list_all_contacts = file_edited.read_file()  # lista que guarda todos os contatos do banco
         all_numbers_of_a_name = self._search_numbers_by_name(name) #pegando todos os contatos ligados a um
         # mesmo nome.
 
@@ -92,12 +90,12 @@ class Dao:
 
                 dict_contact = self._return_a_dictionary(new_name, new_number)  # novo dict com o numero e novo nome
 
-                for contact in list_all_contacts:
+                for contact in self.contact_list:
                     if number_for_edition == contact["number_phone"]:
                         contact.update(dict_contact)
                         break
 
-                file_edited.write_in_json(list_all_contacts)
+                self.file.write_in_json(self.contact_list)
                 print("Edição realizada com sucesso!")
             else:
                 print( f'Opa! Este número "{number_for_edition}" NÃO é um dos números de "{name}."')
@@ -109,13 +107,11 @@ class Dao:
         """PESQUISAR CONTATOS: essa funcão faz pesquisa por um ou mais contatos dentro do banco (json). A partir de um nome
         recebido por parâmetro, ela retorna uma lista com todos os contatos cujos nomes sejam iguais ao parametro passado."""
 
-        new_file = File() #instância da classe File
-        bd = new_file.read_file() #lendo o json e armazenando os dados numa lista
         all_contacts_of_number = [] # criando a lista que armazenará todos os contatos que tenham o mesmo nome.
 
         validator =  False #variavel de validacao
 
-        for contact in bd: #percorrendo a lista de contatos
+        for contact in self.contact_list: #percorrendo a lista de contatos
             if name in contact.values(): #verificando se o nome passado é igual aos nomes dos dicionarios
                 all_contacts_of_number.append(contact) #salvando na lista os contatos cujos nomes sao iguais ao parametro
                 validator = True
@@ -146,7 +142,8 @@ class Dao:
         print("NOME".center(column_name),"NÚMERO\n".center(column_number))
 
         for index, dictionary in enumerate( list_contact):
-           print(f"{index + 1}".rjust(numbers) , f' {dictionary["name"]}'.ljust(names),  f'{dictionary["number_phone"]}'.center(numbers))
+           print(f"{index + 1}".rjust(numbers) , f' {dictionary["name"]}'.ljust(names),
+                 f'{dictionary["number_phone"]}'.center(numbers))
 
     def _remove_a_dictionary_from_a_list (self, number_for_delete):
         """REMOVER UM DICIONÁRIO DE UMA LISTA:  essa função recebe por parametro um numero e uma lista qualquer,
@@ -167,7 +164,7 @@ class Dao:
             return True
 
     def _check_if_a_number_is_in_a_list(self, number, list_numbers):
-        """VERIFICAR SE UM NÚMERO ESTÁ NUMA LISTA: essa recebe um número e uma lista por parâmetro e tem a
+        """VERIFICAR SE UM NÚMERO ESTÁ NUMA LISTA: essa função recebe um número e uma lista, via parâmetro, e tem a
         responsabilidade de verificar se este número está nessa lista, retornando True se estiver e False se nao."""
 
         validator = False

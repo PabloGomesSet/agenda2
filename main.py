@@ -10,12 +10,12 @@ Registrar em arquivo local nome e número de telefone
 
 Desenvolvedores: Pablo Gomes
 
- início: 02/06/2025 ;  fim: 11/06/2025
+ início: 02/06/2025 ;  fim: 17/06/2025
 
  Desenvolvedores: Pablo Gomes
 
  Coisas a resolver:
-# corrigir a parte a função de busca que, quando digitada poucas letras, exibe um mesmo contato mais de uma vez.
+#
 
 """
 
